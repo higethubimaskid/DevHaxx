@@ -51,12 +51,12 @@ const modGUI = {
 const originalFetch = window.fetch;
 window.fetch = function (url, options) {
   if (url.includes("logger") || JSON.stringify(options).includes("logger")) {
-    return Promise.reject(new Error("OnTop AntiLog"));
+    return Promise.reject(new Error("DevHaxx AntiLog"));
   }
   return originalFetch.apply(this, arguments);
 };
 
-const mainMenu = modGUI.createMenu("OnTop", "OnTop", "absolute", "20px", "20px");
+const mainMenu = modGUI.createMenu("DevHaxx", "DevHaxx", "absolute", "20px", "20px");
 
 modGUI.addButton(mainMenu, "Lesson Skipper", () => {
   const html5Iframe = document.getElementById("html5Iframe");
