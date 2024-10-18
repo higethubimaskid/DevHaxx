@@ -1,34 +1,12 @@
-/**
- * MovaAPI - A utility for interacting with a specific context and extracting data 
- * from a Webpack module cache. This API provides methods to scan through objects 
- * and find functions based on specified keys.
- *
- * @param {Object} config - Configuration object.
- * @param {Window} [config.context] - The context (e.g., iframe contentWindow) to operate within. 
- *                                      If not provided, it defaults to the window of an iframe with ID 'html5Iframe'.
- *
- * @returns {Object|string} - An object containing various properties and methods for accessing 
- *                            the Webpack module cache, or an error message if the config is invalid.
- *                            Returns an object with:
- *                            - subject: Extracted subject from context.src.
- *                            - config: The provided configuration object.
- *                            - context: The determined context.
- *                            - webpack: The Webpack object found in the context.
- *                            - require: The require function for module loading.
- *                            - scan: A method to scan through the module cache for specific keys.
- *                            - find: A method to find functions by their keys in the module cache.
- *
- * @throws {Error} Throws an error if the context is invalid or if the config is not provided.
- */
 function MovaAPI(config) {
-    if (!config) return "no config object";
+    if (!config) return "no config object"
 
     let context;
     if (!config.context || config.context === null) {
         if (document.getElementById("html5Iframe")) {
-            context = document.getElementById("html5Iframe").contentWindow;
+            context = document.getElementById("html5Iframe").contentWindow
         } else {
-            throw new Error("config.context invalid");
+            throw new Error("config.context invalid")
         }
     } else {
         context = config.context;
@@ -48,15 +26,15 @@ function MovaAPI(config) {
     const sym = Symbol();
     context.Object.defineProperty(context.Object.prototype, sym, {
         get() {
-            require.c = this; // set cache
+            require.c = this // set cache
             return {
-                exports: {mova: "ontop"}; // return fake exports so no crash
+                exports: {mova:"ontop"} // return fake exports so no crash
             };
         },
         set() {}, // again, so no crash
         configurable: true,
     });
-    require(sym); // require the identifier which is hooked, so when webpack attempts to get the content, the cache will be set to require.c
+    require(sym); // require the identficator which is hooked, so when webpack attempts to get the content, the cache will be set to require.c
     delete context.Object.prototype[sym]; // remove traces of the hook
 
     // start return funcs
